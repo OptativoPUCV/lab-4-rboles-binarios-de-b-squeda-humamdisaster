@@ -37,14 +37,44 @@ TreeNode * createTreeNode(void* key, void * value) {
 }
 
 TreeMap * createTreeMap(int (*lower_than) (void* key1, void* key2)) {
-
-    //new->lower_than = lower_than;
-    return NULL;
+    TreeMap * map = (TreeMap *)malloc(sizeof(TreeMap));
+    if (map == NULL) return NULL;
+    map->root = NULL; // inicializa el nodo raiz
+    map->current = NULL; // inicializa el nodo actual
+    map->lower_than = lower_than; // inicializa la funcion de comparacion
+    return map;
 }
 
 
 void insertTreeMap(TreeMap * tree, void* key, void * value) {
+    TreeNode* parent = NULL;
+    TreeNode* current = tree->root;
 
+    while (current != NULL) {
+        parent = current;
+        if (is_equal(tree, key, current->pair->key))
+        return; //ya existe
+        if (tree->lower_than(key, current->pair->key)) {
+            current = current->left; //inserta a la izquierda
+        } 
+        else {
+            current = current->right; //inserta a la derecha
+        }
+    }
+    TreeNode* new = createTreeNode(key, value);
+    new->parent = parent;
+
+    if (parent == NULL) {
+        tree->root = new; //el arbol estaba vacio
+    } 
+    else if (tree->lower_than(key, parent->pair->key)) {
+        parent->left = new; //inserta a la izquierda
+    } 
+    else {
+        parent->right = new; //inserta a la derecha
+    }
+    tree->current = new; //actualiza el nodo actual
+    
 }
 
 TreeNode * minimum(TreeNode * x){
@@ -66,10 +96,20 @@ void eraseTreeMap(TreeMap * tree, void* key){
 
 }
 
-
-
-
 Pair * searchTreeMap(TreeMap * tree, void* key) {
+    TreeNode * current = tree->root;
+
+    while (current != NULL) {
+        if (is_equal(tree, key, current->pair->key)) {
+            tree->current = current; //actualiza el nodo actual
+        }
+        if(tree->lower_than(key, current->pair->key)) {
+            current = current->left; //busca a la izquierda
+        } 
+        else{
+            current = current->right;  //busca a la derecha
+        }
+    }
     return NULL;
 }
 
