@@ -102,6 +102,7 @@ Pair * searchTreeMap(TreeMap * tree, void* key) {
     while (current != NULL) {
         if (is_equal(tree, key, current->pair->key)) {
             tree->current = current; //actualiza el nodo actual
+            return current->pair; //encontro el nodo
         }
         if(tree->lower_than(key, current->pair->key)) {
             current = current->left; //busca a la izquierda
