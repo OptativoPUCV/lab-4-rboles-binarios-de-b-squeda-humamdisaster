@@ -122,7 +122,9 @@ Pair * upperBound(TreeMap * tree, void* key) {
 }
 
 Pair * firstTreeMap(TreeMap * tree) {
-    return NULL;
+    if (tree->root == NULL) return NULL; //el arbol esta vacio
+    tree->current = minimum(tree->root); //busca el nodo mas a la izquierda
+    return tree->current->pair; //retorna el nodo mas a la izquierda
 }
 
 Pair * nextTreeMap(TreeMap * tree) {
