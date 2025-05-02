@@ -162,5 +162,17 @@ Pair * firstTreeMap(TreeMap * tree) {
 }
 
 Pair * nextTreeMap(TreeMap * tree) {
-    return NULL;
+    TreeNode* current = tree->current;
+
+    if (current->right != NULL){
+        tree->current = minimum(current->right);
+        return tree->current->pair; //retorna el nodo mas a la izquierda
+    }
+    TreeNode* parent = current->parent;
+    while (parent != NULL && current == parent->right) {
+        current = parent;
+        parent = parent->parent;
+    }
+    tree->current = parent; //actualiza el nodo actual
+    return (parent != NULL) ? parent->pair : NULL; //retorna el nodo padre
 }
